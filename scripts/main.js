@@ -12,14 +12,14 @@ async function executionLoop(time) {
     renderArrayOnCanvas(nextState);
     console.log('Next -> ', nextState);
     executionCounter++;
-    await sleep(1000);
-    if (executionCounter <= 1) requestAnimationFrame(executionLoop);
+    await sleep(3000);
+    if (executionCounter <= 0) requestAnimationFrame(executionLoop);
 }
 
 async function startExecution() {
     console.log('Starting Execution');
     renderArrayOnCanvas(arrayState);
-    await sleep(1000);
+    await sleep(3000);
     executionLoop(0);
 }
 
@@ -48,9 +48,10 @@ function getNextState(currentArrayState) {
     for(let i = 0; i < currentArrayState.length; i++) {
         let row = [];
         for(let j = 0; j < currentArrayState.length; j++) {
-            const numberOfNeighbors = getNumberOfNeighbors(i, j, currentArrayState);
-            console.log('Cell: ', i, j, numberOfNeighbors);
-            row.push(getNextValue(currentArrayState[i][j], numberOfNeighbors));
+            const numberOfNeighbors = getNumberOfNeighbors(j, i, currentArrayState);
+            const newValue = getNextValue(currentArrayState[j][i], numberOfNeighbors);
+            console.log('Cell: ', j, i, currentArrayState[j][i], numberOfNeighbors, newValue);
+            row.push(newValue);
         }
         newArray.push(row);
     }
@@ -61,7 +62,7 @@ function getNumberOfNeighbors(x, y, arr) {
     let neighbors = 0;
     for (let i = 1; i<=3; i++) {
         for (let j = 1; j<=3; j++) {
-            const xCoord = (x + i) % 3;
+            const xCoord = (x + j) % 3;
             const yCoord = (y + i) % 3;
             if (xCoord < 0 || xCoord >= arr.length) continue;
             if (xCoord == x && yCoord == y) continue;
@@ -82,8 +83,7 @@ function renderArrayOnCanvas(arr) {
     for(let i = 0; i < arr.length; i++) {
         //console.log('Rendering Row');
         for(let j = 0; j < arr.length; j++) {
-          console.log('X:', i, 'Y:', j, arr[i][j]);
-          if (arr[i][j] === 1) ctx.fillRect(i * 20,j * 20,15,15);
+          if (arr[j][i] === 1) ctx.fillRect(i * 20,j * 20,15,15);
         }
     }
 }
