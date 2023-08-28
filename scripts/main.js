@@ -60,13 +60,11 @@ function getNextState(currentArrayState) {
 
 function getNumberOfNeighbors(x, y, arr) {
     let neighbors = 0;
-    for (let i = 1; i<=3; i++) {
-        for (let j = 1; j<=3; j++) {
-            const xCoord = (x + j) % 3;
-            const yCoord = (y + i) % 3;
-            if (xCoord < 0 || xCoord >= arr.length) continue;
-            if (xCoord == x && yCoord == y) continue;
-            if (arr[xCoord][yCoord] === 1) neighbors++;
+    for (let i = 0; i<= 2; i++) {
+        for (let j = 0; j<= 2; j++) {
+            const xCoord = (x - 1) + j;
+            const yCoord = (y - 1) + i;;
+            if(xCoord > 0 && xCoord < arr.length && xCoord !== x && yCoord !== y && arr[xCoord][yCoord]) neighbors++;
         }
     }
     return neighbors;
